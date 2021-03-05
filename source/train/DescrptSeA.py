@@ -203,12 +203,18 @@ class DescrptSeA ():
                                        sel_r = self.sel_r)
 
         self.descrpt_reshape = tf.reshape(self.descrpt, [-1, self.ndescrpt])
-        self.descrpt_reshape = tf.identity(self.descrpt_reshape, name = 'o_rmat')
-        self.descrpt_deriv = tf.identity(self.descrpt_deriv, name = 'o_rmat_deriv')
+        self.descrpt_reshape = tf.identity(self.descrpt_reshape, name = 'o_rmat') # jx: shape [natoms_allframes,ndesc*nnei]
+        self.descrpt_deriv = tf.identity(self.descrpt_deriv, name = 'o_rmat_deriv') # jx: shape [nframes,natoms*ndesc*nnei*3]
         self.rij = tf.identity(self.rij, name = 'o_rij')
         self.nlist = tf.identity(self.nlist, name = 'o_nlist')
 
         self.dout, self.qmat = self._pass_filter(self.descrpt_reshape, natoms, suffix = suffix, reuse = reuse, trainable = self.trainable)
+
+        # jx: for uncertainty 
+        dmat_reshape = tf.reshape(self.dout, [-1, self.get_dim_out()])
+        self.dmat_reshape = tf.identity(dmat_reshape, name='o_dmat')
+        [dmat_deriv] = tf.gradients(self.dmat_reshape, self.descrpt_reshape)
+        self.dmat_deriv = tf.identity(dmat_deriv, name='o_dmat_deriv')
 
         return self.dout
 
@@ -218,11 +224,11 @@ class DescrptSeA ():
 
 
     def prod_force_virial(self, atom_ener, natoms) :
-        [net_deriv] = tf.gradients (atom_ener, self.descrpt_reshape)
+        [net_deriv] = tf.gradients (atom_ener, self.descrpt_reshape) # jx: all atomic energy vs desc 
         net_deriv_reshape = tf.reshape (net_deriv, [-1, natoms[0] * self.ndescrpt])        
         force \
-            = op_module.prod_force_se_a (net_deriv_reshape,
-                                          self.descrpt_deriv,
+            = op_module.prod_force_se_a (net_deriv_reshape, # jx: dEi/dRi=dEi/dDi*dDi/dRi 
+                                          self.descrpt_deriv, # jx: dRi/dr_nei 
                                           self.nlist,
                                           natoms,
                                           n_a_sel = self.nnei_a,

@@ -257,7 +257,7 @@ class NNPTrainer (object):
 
         self.place_holders['type']      = tf.placeholder(tf.int32,   [None], name='t_type')
         self.place_holders['natoms_vec']        = tf.placeholder(tf.int32,   [self.ntypes+2], name='t_natoms')
-        self.place_holders['defmake_default_meshault_mesh']      = tf.placeholder(tf.int32,   [None], name='t_mesh')
+        self.place_holders['default_mesh']      = tf.placeholder(tf.int32,   [None], name='t_mesh')
         self.place_holders['is_training']       = tf.placeholder(tf.bool)
         self.model_pred\
             = self.model.build (self.place_holders['coord'], 
