@@ -53,7 +53,7 @@ class DeepmdDataSystem() :
         ntypes = []
         for ii in self.data_systems :
             ntypes.append(ii.get_ntypes())
-        self.sys_ntypes = max(ntypes)
+        self.sys_ntypes = max(ntypes) # jx: max number of types among all systems 
         self.natoms = []
         self.natoms_vec = []
         self.nbatches = []
@@ -61,7 +61,7 @@ class DeepmdDataSystem() :
         for ii in range(self.nsystems) :
             self.natoms.append(self.data_systems[ii].get_natoms())
             self.natoms_vec.append(self.data_systems[ii].get_natoms_vec(self.sys_ntypes).astype(int))
-            self.nbatches.append(self.data_systems[ii].get_sys_numb_batch(self.batch_size[ii]))
+            self.nbatches.append(self.data_systems[ii].get_sys_numb_batch(self.batch_size[ii])) # jx: this will call load_dataset to load coord.npy from DeepmdData
             type_map_list.append(self.data_systems[ii].get_type_map())
         self.type_map = self._check_type_map_consistency(type_map_list)
 

@@ -127,7 +127,7 @@ class EnerFitting ():
             
 
     def build (self, 
-               inputs,
+               inputs, # jx: dout
                input_dict,
                natoms,
                reuse = None,

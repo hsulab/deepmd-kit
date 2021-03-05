@@ -949,7 +949,7 @@ void compute_descriptor_se_a (vector<double > &			descrpt_a,
   vector<vector<double > > sel_a_diff (sec_a.back());
   rij_a.resize (sec_a.back() * 3);
   fill (rij_a.begin(), rij_a.end(), 0.0);
-  for (int ii = 0; ii < int(sec_a.size()) - 1; ++ii){
+  for (int ii = 0; ii < int(sec_a.size()) - 1; ++ii){ // jx: atom type 
     for (int jj = sec_a[ii]; jj < sec_a[ii+1]; ++jj){
       if (fmt_nlist_a[jj] < 0) break;
       sel_a_diff[jj].resize(3);

@@ -17,7 +17,7 @@ class DeepmdData() :
         self.dirs = glob.glob (os.path.join(sys_path, set_prefix + ".*"))
         self.dirs.sort()
         # load atom type
-        self.atom_type = self._load_type(sys_path)
+        self.atom_type = self._load_type(sys_path) # jx: type list as [0,0,1,1]
         self.natoms = len(self.atom_type)
         # load atom type map
         self.type_map = self._load_type_map(sys_path)
@@ -183,7 +183,7 @@ class DeepmdData() :
         natoms, natoms_vec = self._get_natoms_2 (ntypes)
         tmp = [natoms, natoms]
         tmp = np.append (tmp, natoms_vec)
-        return tmp.astype(np.int32)
+        return tmp.astype(np.int32) # jx: this returns [natoms, natoms, ntypea, ...]
     
     def avg(self, key) :
         if key not in self.data_dict.keys() :

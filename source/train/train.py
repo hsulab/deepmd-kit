@@ -135,7 +135,7 @@ def _do_work(jdata, run_opt):
     data.print_summary(run_opt, 
                        sys_probs = sys_probs, 
                        auto_prob_style = auto_prob_style)
-    data.add_dict(data_requirement)
+    data.add_dict(data_requirement) # jx: no use? 
     # build the model with stats from the first system
     model.build (data, stop_batch)
     # train the model with the provided systems in a cyclic way

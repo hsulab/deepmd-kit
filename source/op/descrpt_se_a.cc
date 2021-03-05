@@ -179,7 +179,7 @@ public:
     OP_REQUIRES (context, (ntypes == int(sel_a.size())),	errors::InvalidArgument ("number of types should match the length of sel array"));
     OP_REQUIRES (context, (ntypes == int(sel_r.size())),	errors::InvalidArgument ("number of types should match the length of sel array"));
 
-    for (int kk = 0; kk < nsamples; ++kk){
+    for (int kk = 0; kk < nsamples; ++kk){ // jx: main loop over all configurations 
       // set region
       boxtensor_t boxt [9] = {0};
       for (int dd = 0; dd < 9; ++dd) {
@@ -194,7 +194,7 @@ public:
 	for (int dd = 0; dd < 3; ++dd){
 	  d_coord3[ii*3+dd] = coord(kk, ii*3+dd);
 	}
-	if (b_norm_atom){
+	if (b_norm_atom){ // jx: for pbc systems, wrap atoms in the box 
 	  compute_t inter[3];
 	  region.phys2Inter (inter, &d_coord3[3*ii]);
 	  for (int dd = 0; dd < 3; ++dd){
